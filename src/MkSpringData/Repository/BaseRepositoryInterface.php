@@ -5,6 +5,8 @@ use Doctrine\ORM\QueryBuilder;
 use MkDoctrineSpringData\Pagination\PageableInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\EntityRepository;
+use MkDoctrineSpringData\Pagination\Sort;
+use MkDoctrineSpringData\Pagination\PageInterface;
 
 
 // /**
@@ -52,11 +54,11 @@ interface BaseRepositoryInterface
     
     /**
      * Finds all objects in the repository.
-     * @param PageableInterface|array $pagableOrIds array of Ids if you want to find all matching given ids or PagableInterface if you wanna do pagnigation, you can define current page, page size and sorting here. otherwise find all entities.
-     * @param int $hydrationMode Doctrine HydrationMode for pagination, if not a pagnigation. this will be ignore.
-     * @return PageableInterface|array
+     * @param PageableInterface|Sort|array $pagableOrSortOrIds array of Ids if you want to find all matching given ids, Sort if you wanna define sorting or PagableInterface if you wanna do pagnigation, you can also define current page, page size and sorting within PagableInterface. otherwise find all entities.
+     * @param int $hydrationMode Doctrine HydrationMode.
+     * @return PageInterface|array
      */
-    function findAll($pagableOrIds = null, $hydrationMode = Query::HYDRATE_OBJECT);
+    function findAll($pagableOrSortOrIds = null, $hydrationMode = null);
     
     /**
      * @see \Doctrine\ORM\EntityRepository::getClassName()

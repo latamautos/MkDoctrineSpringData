@@ -127,29 +127,75 @@ abstract class BaseRepositoryImpl implements  BaseRepositoryInterface
 	/**
 	 * @see \MkDoctrineSpringData\Repository\BaseRepositoryInterface::findAll()
 	 */
-	public final function findAll($pagableOrIds = null, $hydrationMode = Query::HYDRATE_OBJECT){
-	    if(empty($pagableOrIds)){
-	        return $this->findBy(array());
+	public final function findAll($pagableOrSortOrIds = null, $hydrationMode = null){
+	    
+	    if(empty($pagableOrSortOrIds)){
+	        if(null === $hydrationMode) {
+	            return $this->findBy(array());
+	        }else{
+	            return $this->createQueryBuilder('e')->getQuery()->getResult($hydrationMode);
+	        }
 	    }
-	    else if (is_array($pagableOrIds)){
+	    else if (is_array($pagableOrSortOrIds)){
 	        $identityFields = $this->_classMetadata->getIdentifier();
 	        Assert::isTrue(count($identityFields)==1, 'DoctrineSpringData Repository only support single primary key.');
 	        $idField = $identityFields[0];
 	        return $this->createQueryBuilder('e')
 	                   ->where("e.{$idField} IN (:ids)")
-	                   ->setParameter('ids', $pagableOrIds)
+	                   ->setParameter('ids', $pagableOrSortOrIds)
 	                   ->getQuery()
 	                   ->getResult();
 	    }
+	    else if($pagableOrSortOrIds instanceof  Sort){
+	        $qb = $this->createQueryBuilder('e');
+	        $this->processSorting($qb, $pagableOrSortOrIds);
+	        return $qb->getQuery()->getResult($hydrationMode);
+	    }
 	    else{
 	        $qb = $this->createQueryBuilder('e');
-	        $total = $this->processPagnigation($qb, $pagableOrIds);
+	        $total = $this->processPagnigation($qb, $pagableOrSortOrIds);
 	        $content = $qb->getQuery()->getResult($hydrationMode);
-	        $page = new PageImpl($content, $pagableOrIds, $total);
+	        $page = new PageImpl($content, $pagableOrSortOrIds, $total);
 	        return $page;
 	    }
 		
 	}	
+	
+	
+	/**
+	 * Append query spec from Sort into QueryBuilder
+	 * @param QueryBuilder $qb
+	 * @param Sort $sort
+	 * @param string $alias
+	 * @return integer total elements
+	 * @throws \InvalidArgumentException
+	 */
+	protected final function processSorting(QueryBuilder $qb, Sort $sort, $alias = 'e')
+    {
+        Assert::notNull($qb);
+        Assert::notNull($sort);
+        foreach ($sort as $order) {
+            /* @var $order Order */
+            $direction = $order->getDirection()->getValue();
+            $nullHandling = $order->getNullHandling();
+            $property = $order->getProperty();
+            $nullHandlingString = null;
+            switch ($nullHandling->getValue()) {
+                case NullHandling::NATIVE:
+                    $nullHandlingString = '';
+                    break;
+                case NullHandling::NULLS_FIRST:
+                    $nullHandlingString = ' NULLS FIRST';
+                    break;
+                case NullHandling::NULLS_LAST:
+                    $nullHandlingString = ' NULLS LAST';
+                    break;
+                default:
+                    throw new \InvalidArgumentException('Invalid Null Handling value which not match any switch case: ' . $nullHandling->getValue());
+            }
+            $qb->addOrderBy("{$alias}.{$property}", $direction . $nullHandlingString);
+        }
+    }
 	
 	/**
 	 * Append query spec from PagableInterfect into QueryBuilder
@@ -162,29 +208,11 @@ abstract class BaseRepositoryImpl implements  BaseRepositoryInterface
 	protected final function processPagnigation(QueryBuilder $qb, PageableInterface $pagable, $alias = 'e'){
 	    
 	    $sort = $pagable->getSort();
+	    
 	    if($sort){
-	        foreach($sort as $order){
-	            /* @var $order Order */
-	            $direction = $order->getDirection()->getValue();
-	            $nullHandling = $order->getNullHandling();
-	            $property = $order->getProperty();
-	            $nullHandlingString = null;
-	            switch ($nullHandling->getValue()){
-	                case NullHandling::NATIVE :
-	                    $nullHandlingString = '';
-	                    break;
-	                case NullHandling::NULLS_FIRST :
-	                    $nullHandlingString = ' NULLS FIRST';
-	                    break;
-	                case NullHandling::NULLS_LAST:
-	                    $nullHandlingString = ' NULLS LAST';
-	                    break;
-	                default:
-	                    throw new \InvalidArgumentException('Invalid Null Handling value which not match any switch case: '.$nullHandling->getValue() );
-	            }
-	            $qb->addOrderBy("{$alias}.{$property}", $direction.$nullHandlingString);
-	        }
+	        $this->processSorting($qb, $sort,$alias);
 	    }
+	    
 	    /* @var $select Select */
 	    $selectList = $qb->getDQLPart('select');
 	    $qb->resetDQLPart('select');
