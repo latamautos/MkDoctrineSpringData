@@ -1,6 +1,6 @@
 {
     "name": "evilband7/mk-doctrine-spring-data",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": "Bring SpringData features into PHP",
     "type": "library",
     "license": "Apache License, Version 2.0",
