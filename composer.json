@@ -1,0 +1,37 @@
+{
+    "name": "evilband7/mkcore",
+    "version": "1.0.0",
+    "description": "[Private Proejct] Core",
+    "type": "library",
+    "license": "Copyright 2014 Mr.Siwapun Siwaporn. All right reserved.",
+    "authors": [
+        {
+            "name": "Siwapun Siwaporn",
+            "email": "siwapun.si@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.0",
+        "zendframework/zendframework": ">2.2",
+        "doctrine/orm": "*",
+        "doctrine/common": ">=2.1",
+        "doctrine/doctrine-orm-module": "0.8.*",
+        "myclabs/php-enum" : "*",
+        "evilband7/php-common-util" : "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "MkCore\\": "src/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "*"
+    },
+    
+    "repositories": [
+		{
+		  "type": "composer",
+		  "url":  "https://repo.fury.io/evilband7/"
+		}
+	]
+}
