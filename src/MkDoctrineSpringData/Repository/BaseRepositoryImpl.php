@@ -23,6 +23,8 @@ use PhpCommonUtil\Util\Assert;
  */
 abstract class BaseRepositoryImpl implements  BaseRepositoryInterface
 {
+    
+    public static $NAMING_STRATEGY = 'Domain';
 	
 	/**
 	 * 
