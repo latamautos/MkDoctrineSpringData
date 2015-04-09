@@ -22,6 +22,8 @@ use MkDoctrineSpringData\Pagination\PageInterface;
 interface BaseRepositoryInterface
 {
     
+    const NAMING_STRATEGY = 'Domain';
+    
     /**
      * Save target entity into db.
      * @param object $entity Entity to save
