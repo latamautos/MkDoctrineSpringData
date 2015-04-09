@@ -245,7 +245,7 @@ abstract class BaseRepositoryImpl implements  BaseRepositoryInterface
 	
 	protected function buildEntityName(){
 	    $clazz = get_called_class();
-	    $namingStrategy = $clazz::NAMING_STRATEGY;
+	    $namingStrategy = $clazz::$NAMING_STRATEGY;
 	    $clazz = str_replace('\Repository', "\\{$namingStrategy}", $clazz);
 	    $clazz = str_replace('Repository', '', $clazz);
 	    $clazz = str_replace("Impl", '', $clazz);
