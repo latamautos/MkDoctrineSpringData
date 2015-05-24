@@ -15,6 +15,7 @@ use Doctrine\ORM\Query\Expr\Select;
 use Doctrine\ORM\UnitOfWork;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpCommonUtil\Util\Assert;
+use MkDoctrineSpringData\Pagination\PageInterface;
 
 /**
  * 
@@ -169,7 +170,7 @@ abstract class BaseRepositoryImpl implements  BaseRepositoryInterface
 	 * @param QueryBuilder $qb
 	 * @param Sort $sort
 	 * @param string $alias
-	 * @return integer total elements
+	 * @return NULL
 	 * @throws \InvalidArgumentException
 	 */
 	protected final function processSorting(QueryBuilder $qb, Sort $sort, $alias = 'e')
@@ -207,7 +208,7 @@ abstract class BaseRepositoryImpl implements  BaseRepositoryInterface
 	 * @return integer total elements
 	 * @throws \InvalidArgumentException
 	 */
-	protected final function processPagnigation(QueryBuilder $qb, PageableInterface $pagable, $alias = 'e'){
+	protected final function processPaginationQueryBuilder(QueryBuilder $qb, PageableInterface $pagable, $alias = 'e'){
 	    
 	    $sort = $pagable->getSort();
 	    
@@ -228,6 +229,22 @@ abstract class BaseRepositoryImpl implements  BaseRepositoryInterface
 	    $qb->setMaxResults($pagable->getPageSize());
 	    $qb->setFirstResult($pagable->getPageSize() * $pagable->getPageNumber());
 	    return $total;
+	}
+	
+	/**
+	 * Append query spec from PagableInterfect into QueryBuilder
+	 * @param QueryBuilder $qb
+	 * @param PageableInterface $pagable
+	 * @param string $alias
+	 * @param int $hydrationMode
+	 * @return PageInterface
+	 * @throws \InvalidArgumentException
+	 */
+	protected final function processPagination(QueryBuilder $qb, PageableInterface $pagable, $alias = 'e', $hydrationMode = Query::HYDRATE_OBJECT){
+	    $total = $this->processPaginationQueryBuilder($qb, $pagable,$alias);
+	    $content = $qb->getQuery()->getResult($hydrationMode);
+	    $page = new PageImpl($content, $pagable, $total);
+	    return $page;
 	}
 
 	public final function getClassName(){
