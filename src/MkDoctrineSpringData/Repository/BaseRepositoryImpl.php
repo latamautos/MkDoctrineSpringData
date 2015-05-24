@@ -156,10 +156,7 @@ abstract class BaseRepositoryImpl implements  BaseRepositoryInterface
 	    }
 	    else{
 	        $qb = $this->createQueryBuilder('e');
-	        $total = $this->processPagnigation($qb, $pagableOrSortOrIds);
-	        $content = $qb->getQuery()->getResult($hydrationMode);
-	        $page = new PageImpl($content, $pagableOrSortOrIds, $total);
-	        return $page;
+	        return $this->processPagination($qb, $pagableOrSortOrIds);
 	    }
 		
 	}	
