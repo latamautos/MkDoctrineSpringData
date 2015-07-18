@@ -17,7 +17,8 @@ class PageRequest extends AbstractPageRequest
      * @param int page zero-based page index.
      * @param int size the size of the page to be returned.
      */
-    public function  __construct($page, $size, $directionOrSort = null, array $properties = array()) {
+    public function  __construct($page, $size, $directionOrSort = null, $properties = array()) {
+        $properties = is_array($properties) ? $properties : array($properties);
         Assert::isTrue(is_null($directionOrSort) || $directionOrSort instanceof Direction || $directionOrSort instanceof Sort);
         parent::__construct($page, $size);
         $this->sort = is_null($directionOrSort) ? null : ( $directionOrSort instanceof  Sort ? $directionOrSort: new Sort($directionOrSort, $properties) );

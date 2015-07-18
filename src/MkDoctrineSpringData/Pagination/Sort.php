@@ -21,7 +21,9 @@ class Sort implements \IteratorAggregate
      *
      * @param orders must not be {@literal null}.
      */
-    public function __construct(Direction $direction = null, array $ordersOrProperties = array()) {
+    public function __construct(Direction $direction = null, $ordersOrProperties = array()) {
+        
+        $ordersOrProperties = is_array($ordersOrProperties) ? $ordersOrProperties : array($ordersOrProperties);
         
         $direction = null==$direction ? self::DEFAULT_DIRECTION : $direction;
         $direction = $direction instanceof  Direction ? $direction : Direction::$direction();
