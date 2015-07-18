@@ -1,6 +1,7 @@
 <?php
 
 namespace  MkDoctrineSpringData\Pagination\Sorting;
+
 use MyCLabs\Enum\Enum;
 
 class Direction extends Enum

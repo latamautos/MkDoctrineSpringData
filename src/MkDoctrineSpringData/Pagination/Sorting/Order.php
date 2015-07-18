@@ -44,7 +44,6 @@ class Order
      */
     public function  __construct(Direction $direction = null, $property = 'id', $ignoreCase = null, NullHandling $nullHandling = null) {
         
-        
         if (!StringUtils::hasText($property)){
             throw new \InvalidArgumentException("Property must not null or empty!");
         }
@@ -168,7 +167,7 @@ class Order
      * @since 1.7
      */
     public function  nullsLast() {
-        return with(NullHandling::NULLS_LAST());
+        return $this->with(NullHandling::NULLS_LAST());
     }
     
     /**
@@ -178,7 +177,7 @@ class Order
      * @since 1.7
      */
     public function  nullsNative() {
-        return with(NullHandling::NATIVE());
+        return $this->with(NullHandling::NATIVE());
     }
     
     /**

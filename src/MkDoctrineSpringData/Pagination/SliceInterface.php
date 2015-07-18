@@ -1,7 +1,6 @@
 <?php
 namespace MkDoctrineSpringData\Pagination;
 
-use Doctrine\Common\Collections\ArrayCollection;
 interface SliceInterface extends \IteratorAggregate
 {
     

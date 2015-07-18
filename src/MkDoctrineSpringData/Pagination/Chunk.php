@@ -2,7 +2,6 @@
 
 namespace MkDoctrineSpringData\Pagination;
 
-use Zend\Stdlib\ArrayObject;
 use PhpCommonUtil\Util\Assert;
 
 abstract  class Chunk implements  SliceInterface

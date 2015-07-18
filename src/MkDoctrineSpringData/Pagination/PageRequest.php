@@ -4,6 +4,7 @@ namespace MkDoctrineSpringData\Pagination;
 
 
 use PhpCommonUtil\Util\Assert;
+use MkDoctrineSpringData\Pagination\Sorting\Direction;
 class PageRequest extends AbstractPageRequest
 {
     

@@ -1,24 +1,8 @@
 <?php
 namespace MkDoctrineSpringData\Repository;
 
-use Doctrine\ORM\QueryBuilder;
-use MkDoctrineSpringData\Pagination\PageableInterface;
-use Doctrine\ORM\Query;
-use Doctrine\ORM\EntityRepository;
-use MkDoctrineSpringData\Pagination\Sort;
 use MkDoctrineSpringData\Pagination\PageInterface;
 
-
-// /**
-//  *
-//  * @method \Core\Base\BaseDomain findOne(mixed $id, int $lockMode = LockMode::NONE, integer|null $lockVersion = null)
-//  * @method \Core\Base\BaseDomain getOne(mixed $id)
-//  * @method \Core\Base\BaseDomain save(\Core\Base\BaseDomain $entity, boolean $flush = false)
-//  * @method void delete(\Core\Base\BaseDomain $entity, boolean $flush=false)
-//  * @method \Core\Base\BaseDomain[] findAll()
-//  * @method void clear()
-//  * @method string getClassName()
-//  */
 interface BaseRepositoryInterface
 {
     

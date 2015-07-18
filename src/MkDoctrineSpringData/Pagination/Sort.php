@@ -1,6 +1,5 @@
 <?php
 namespace MkDoctrineSpringData\Pagination;
-use MyCLabs\Enum\Enum;
 use MkDoctrineSpringData\Pagination\Sorting\Order;
 use MkDoctrineSpringData\Pagination\Sorting\Direction;
 use PhpCommonUtil\Util\Assert;

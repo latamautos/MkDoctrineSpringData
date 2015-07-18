@@ -60,7 +60,7 @@ abstract class AbstractPageRequest implements  PageableInterface
      * @see \MkDoctrineSpringData\Pagination\PageableInterface::previousOrFirst()
      */
     public function  previousOrFirst() {
-        return hasPrevious() ? previous() : first();
+        return $this->hasPrevious() ? $this->previous() : $this->first();
     }
     
     /**
