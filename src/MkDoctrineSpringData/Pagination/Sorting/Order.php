@@ -126,7 +126,7 @@ class Order
      * @param properties
      * @return Sort
      */
-    public function  withProperties(...$properties) {
+    public function withProperties(array $properties) {
         return new Sort($this->direction, $properties);
     }
     
