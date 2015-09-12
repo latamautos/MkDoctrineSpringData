@@ -3,11 +3,11 @@
   "description" : "Bring SpringData features into PHP",
   "version" : "1.0.15",
   "require" : {
-    "php" : ">=5.6.0",
-    "zendframework/zendframework" : ">2.2",
+    "php" : ">=5.5",
+    "zendframework/zendframework" : "*",
     "doctrine/orm" : "*",
-    "doctrine/common" : ">=2.1",
-    "doctrine/doctrine-orm-module" : "0.8.*",
+    "doctrine/common" : "*",
+    "doctrine/doctrine-orm-module" : "*",
     "myclabs/php-enum" : "*",
     "evilband7/php-common-util" : "*"
   },
