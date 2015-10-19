@@ -49,17 +49,9 @@ class Sort implements \IteratorAggregate
      */
     public function andSort (Sort $sort) {
     
-        if ($sort == null) {
-            return this;
-        }
-    
-        $these = new \ArrayObject($this->orders);   
-        $these = $these->getArrayCopy();
-    
-        foreach ($sort as $order){
-            $these[] =  $order;
-        }
-        return new Sort($these);
+        $this->orders = array_merge($this->orders , $sort->getIterator()->getArrayCopy());
+        return $this;
+        
     }
     
     /**
