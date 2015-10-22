@@ -13,8 +13,6 @@ use PhpCommonUtil\Util\Assert;
 use MkDoctrineSpringData\Pagination\PageInterface;
 use MkDoctrineSpringData\Aggregator\PageableOrSort;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use MkDoctrineSpringData\Resolver\NamingResolverInterface;
 
 /**
  * 
@@ -26,12 +24,6 @@ abstract class BaseRepositoryImpl extends EntityRepository implements  BaseRepos
 {
     
     
-    public function __construct($em, ClassMetadata $class, NamingResolverInterface $namingResolver)
-    {
-        
-        parent::__construct($em, $class);
-    }
-	
 	/**
 	 * @see \MkDoctrineSpringData\Repository\BaseRepositoryInterface::save()
 	 */
