@@ -4,6 +4,7 @@ namespace MkDoctrineSpringData\Pagination;
 
 
 use PhpCommonUtil\Util\Assert;
+use MkDoctrineSpringData\Aggregator\DirectionOrSort;
 use MkDoctrineSpringData\Pagination\Sorting\Direction;
 class PageRequest extends AbstractPageRequest
 {
@@ -17,11 +18,19 @@ class PageRequest extends AbstractPageRequest
      * @param int page zero-based page index.
      * @param int size the size of the page to be returned.
      */
-    public function  __construct($page, $size, $directionOrSort = null, $properties = array()) {
-        $properties = is_array($properties) ? $properties : array($properties);
-        Assert::isTrue(is_null($directionOrSort) || $directionOrSort instanceof Direction || $directionOrSort instanceof Sort);
+    public function  __construct($page, $size, DirectionOrSort $directionOrSort = null, ...$properties) 
+    {
         parent::__construct($page, $size);
-        $this->sort = is_null($directionOrSort) ? null : ( $directionOrSort instanceof  Sort ? $directionOrSort: new Sort($directionOrSort, $properties) );
+        if ( null === $directionOrSort){
+            return;
+        }else if ($directionOrSort instanceof Sort){
+            $this->sort = $directionOrSort;
+        }else if ($directionOrSort instanceof Direction){
+            $clazz = new \ReflectionClass(Sort::class);
+            $this->sort = $clazz->newInstanceArgs( array_merge([$directionOrSort], $properties));
+        }else{
+            throw new \InvalidArgumentException('Unimplemented for class: ' . get_class($directionOrSort));
+        }
     }
     
     /**

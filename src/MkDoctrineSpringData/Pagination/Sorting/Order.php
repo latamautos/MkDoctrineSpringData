@@ -5,6 +5,7 @@ namespace  MkDoctrineSpringData\Pagination\Sorting;
 use MkDoctrineSpringData\Pagination\Sort;
 use PhpCommonUtil\Util\StringUtils;
 use PhpCommonUtil\Util\Assert;
+
 class Order
 {
     
@@ -48,14 +49,15 @@ class Order
             throw new \InvalidArgumentException("Property must not null or empty!");
         }
         
-        $this->direction = $direction == null ? Direction::search(self::DEFAULT_DIRECTION) : ($direction instanceof Direction ? $direction : Direction::$direction() ) ;
+        $this->direction = $direction == null ? Direction::search(self::DEFAULT_DIRECTION) : $direction ;
         $this->property = $property;
         $this->ignoreCase = $ignoreCase == null ? self::$DEFAULT_IGNORE_CASE : (bool) $ignoreCase;
-        $this->nullHandling = $nullHandling == null ? NullHandling::NATIVE() : ($nullHandling instanceof NullHandling ? $nullHandling : NullHandling::$nullHandling() );
+        $this->nullHandling = $nullHandling == null ? NullHandling::NATIVE() : $nullHandling;
     
-        Assert::notNull($this->direction);
-        Assert::notNull($this->ignoreCase);
-        Assert::notNull($this->nullHandling);
+        Assert::notNull($this->direction, 'Order->$direction cannot be null');
+        Assert::notEmpty($this->property, 'Order->$property cannot be empty');
+        Assert::notNull($this->ignoreCase, 'Order->$ignoreCase cannot be null');
+        Assert::notNull($this->nullHandling, 'Order->$nullHandling cannot be null');
     }
     
     

@@ -1,7 +1,9 @@
 <?php
 namespace MkDoctrineSpringData\Pagination;
 
-interface PageableInterface
+use MkDoctrineSpringData\Aggregator\PageableOrSortInterface;
+
+interface PageableInterface extends PageableOrSortInterface
 {
     /**
      * Returns the page to be returned.

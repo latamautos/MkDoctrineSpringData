@@ -25,7 +25,6 @@ class PageImpl extends Chunk implements PageInterface
      */
     public function  getTotalPages() {
         return $this->getSize() == 0 ? 1 : ceil($this->total/$this->getSize());
-//         return $this->getSize() == 0 ? 1 : (int) Math.ceil((double) total / (double) getSize());
     }
     
     /**

@@ -3,8 +3,9 @@ namespace MkDoctrineSpringData\Pagination;
 use MkDoctrineSpringData\Pagination\Sorting\Order;
 use MkDoctrineSpringData\Pagination\Sorting\Direction;
 use PhpCommonUtil\Util\Assert;
+use MkDoctrineSpringData\Aggregator\PageableOrSort;
 
-class Sort implements \IteratorAggregate
+class Sort implements \IteratorAggregate, PageableOrSort
 {
     
     const DEFAULT_DIRECTION = Direction::ASC;
@@ -14,27 +15,24 @@ class Sort implements \IteratorAggregate
      * @var Order[]
      */
     private $orders;
-    
-    
+
     /**
-     * Creates a new {@link Sort} instance using the given {@link Order}s.
-     *
-     * @param orders must not be {@literal null}.
+     * Creates a new {@link Sort} instance
+     * 
+     * @param Direction $defaultDirection            
+     * @param Order[]|string[] ...$ordersOrProperties            
+     * @param boolean $initial            
      */
-    public function __construct(Direction $direction = null, $ordersOrProperties = array()) {
-        
-        $ordersOrProperties = is_array($ordersOrProperties) ? $ordersOrProperties : array($ordersOrProperties);
-        
-        $direction = null==$direction ? self::DEFAULT_DIRECTION : $direction;
-        $direction = $direction instanceof  Direction ? $direction : Direction::$direction();
+    public function __construct(Direction $defaultDirection = null, ...$ordersOrProperties)
+    {
+        $defaultDirection = null === $defaultDirection ? Direction::ASC() : $defaultDirection;
         Assert::notEmpty($ordersOrProperties, "You have to provide at least one sort property to sort by!");
-        
         $this->orders = array();
         foreach($ordersOrProperties as $orderOrProp){
             if($orderOrProp instanceof  Order){
                 $this->orders[] = $orderOrProp;
             }else{
-                $this->orders[] = new Order($direction, $orderOrProp);
+                $this->orders[] = new Order($defaultDirection, $orderOrProp);
             }
         }
     }
@@ -72,6 +70,7 @@ class Sort implements \IteratorAggregate
     
     
     public function getIterator() {
+        Assert::notEmpty($this->orders, "This Sort is not initialized yet.");
         return new \ArrayIterator($this->orders);
     }
     

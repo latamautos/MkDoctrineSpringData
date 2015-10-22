@@ -2,8 +2,10 @@
 namespace MkDoctrineSpringData\Repository;
 
 use MkDoctrineSpringData\Pagination\PageInterface;
+use MkDoctrineSpringData\Aggregator\PageableOrSort;
+use Doctrine\Common\Persistence\ObjectRepository;
 
-interface BaseRepositoryInterface
+interface BaseRepositoryInterface extends ObjectRepository
 {
     
     /**
@@ -38,11 +40,11 @@ interface BaseRepositoryInterface
     
     /**
      * Finds all objects in the repository.
-     * @param PageableInterface|Sort|array $pagableOrSortOrIds array of Ids if you want to find all matching given ids, Sort if you wanna define sorting or PagableInterface if you wanna do pagnigation, you can also define current page, page size and sorting within PagableInterface. otherwise find all entities.
+     * @param PageableInterface|Sort|array $pagableOrSort array of Ids if you want to find all matching given ids, Sort if you wanna define sorting or PagableInterface if you wanna do pagnigation, you can also define current page, page size and sorting within PagableInterface. otherwise find all entities.
      * @param int $hydrationMode Doctrine HydrationMode.
      * @return PageInterface|array
      */
-    function findAll($pagableOrSortOrIds = null, $hydrationMode = null);
+    function findAll(PageableOrSort $pagableOrSort = null, array $ids = array(), $hydrationMode = null);
     
     /**
      * @see \Doctrine\ORM\EntityRepository::getClassName()
