@@ -1,7 +1,7 @@
 <?php
 namespace MkDoctrineSpringData\Resolver;
 
-class DefaultNameResolver implements NamingResolverInterface
+class DefaultNamingResolver implements NamingResolverInterface
 {
     
     private $entityKeywordList; 
