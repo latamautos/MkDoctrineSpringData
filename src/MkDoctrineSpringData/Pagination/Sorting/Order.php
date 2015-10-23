@@ -55,7 +55,7 @@ class Order
         $this->nullHandling = $nullHandling == null ? NullHandling::NATIVE() : $nullHandling;
     
         Assert::notNull($this->direction, 'Order->$direction cannot be null');
-        Assert::notEmpty($this->property, 'Order->$property cannot be empty');
+        Assert::hasLength($this->property, 'Order->$property cannot be empty');
         Assert::notNull($this->ignoreCase, 'Order->$ignoreCase cannot be null');
         Assert::notNull($this->nullHandling, 'Order->$nullHandling cannot be null');
     }

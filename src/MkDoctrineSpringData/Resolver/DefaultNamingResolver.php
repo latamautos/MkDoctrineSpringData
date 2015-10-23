@@ -19,6 +19,8 @@ class DefaultNamingResolver implements NamingResolverInterface
     {
         foreach ($this->entityKeywordList as $keyword){
             $tmpResult = str_replace('\Repository', "\\{$keyword}", $repositoryInterfaceName);
+            $tmpResult = str_replace('Repository', "", $tmpResult);
+            $tmpResult = substr($tmpResult, 0, strpos($tmpResult, $this->interfaceSuffix));
             if(class_exists($tmpResult)){
                 return $tmpResult;
             }
