@@ -4,8 +4,9 @@ use MkDoctrineSpringData\Pagination\Sorting\Order;
 use MkDoctrineSpringData\Pagination\Sorting\Direction;
 use PhpCommonUtil\Util\Assert;
 use MkDoctrineSpringData\Aggregator\PageableOrSort;
+use MkDoctrineSpringData\Aggregator\DirectionOrSort;
 
-class Sort implements \IteratorAggregate, PageableOrSort
+class Sort implements \IteratorAggregate, PageableOrSort, DirectionOrSort
 {
     
     const DEFAULT_DIRECTION = Direction::ASC;
