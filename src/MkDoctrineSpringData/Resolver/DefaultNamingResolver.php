@@ -17,10 +17,13 @@ class DefaultNamingResolver implements NamingResolverInterface
     
     public function resolveEntityName($repositoryInterfaceName)
     {
-        $entityKeyword = $this->findEntityKeyword($repositoryInterfaceName);
-        $clazz = str_replace('\Repository', "\\{$entityKeyword}", $repositoryInterfaceName);
-        $clazz = str_replace('Repository'.$this->interfaceSuffix, '', $clazz);
-        return $clazz;
+        foreach ($this->entityKeywordList as $keyword){
+            $tmpResult = str_replace('\Repository', "\\{$keyword}", $repositoryInterfaceName);
+            if(class_exists($tmpResult)){
+                return $tmpResult;
+            }
+        }
+        throw new \InvalidArgumentException( sprintf('Unable to resolve repositoryInterface[%s] to entity name', $repositoryInterfaceName));
     }
 
     public function resolveRepositoryImplementationName($repositoryInterfaceName)
@@ -42,7 +45,7 @@ class DefaultNamingResolver implements NamingResolverInterface
                 return $keyword;
             }
         }
-        throw new \InvalidArgumentException(sprintf('keywords (%s) is not found in repository name[%s]', implode(',', $this->entityKeywordList)), $repositoryOrEntityName);
+        throw new \InvalidArgumentException(sprintf('keywords (%s) is not found in repository name[%s]', implode(',', $this->entityKeywordList), $repositoryOrEntityName) );
     }
 
     

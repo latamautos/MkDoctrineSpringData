@@ -20,6 +20,7 @@ class RepositoryFactory implements DoctrineRepositoryFactoryInterface
         /* @var $entityManager EntityManagerInterface */
         $clazz = $this->namingResolver->resolveRepositoryImplementationName($this->namingResolver->resolveRepositoryInterfaceName($entityName));
         if (class_exists($clazz)){
+            $clazz = '\\'.$clazz;
             return new $clazz($entityManager, $entityManager->getClassMetadata($entityName));
         }else{
             return new BaseRepositoryImpl($entityManager, $entityManager->getClassMetadata($entityName));
