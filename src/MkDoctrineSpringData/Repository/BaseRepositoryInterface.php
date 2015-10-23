@@ -44,7 +44,7 @@ interface BaseRepositoryInterface extends ObjectRepository
      * @param int $hydrationMode Doctrine HydrationMode.
      * @return PageInterface|array
      */
-    function findAll(PageableOrSort $pagableOrSort = null, array $ids = array(), $hydrationMode = null);
+    function findAll(PageableOrSort $pageableOrSort = null, array $ids = array(), $hydrationMode = null);
     
     /**
      * @see \Doctrine\ORM\EntityRepository::getClassName()

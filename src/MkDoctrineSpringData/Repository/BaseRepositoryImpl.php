@@ -106,58 +106,33 @@ class BaseRepositoryImpl extends EntityRepository implements  BaseRepositoryInte
  	/**
 	 * @see \MkDoctrineSpringData\Repository\BaseRepositoryInterface::findAll()
 	 */
-	public function findAll(\MkDoctrineSpringData\Aggregator\PageableOrSort $pagableOrSort = null, array $ids = array(), $hydrationMode = null)
+	public function findAll(\MkDoctrineSpringData\Aggregator\PageableOrSort $pageableOrSort = null, array $ids = array(), $hydrationMode = null)
 	{
 	    
-	    $qb = null;
-	    if ( null === $pagableOrSort )
+	    if ( null === $pageableOrSort && empty($ids) )
 	    {
-	        if( empty($ids) )
-	        {
-	            if(null === $hydrationMode) 
-	            {
-	                return $this->findBy(array());
-	            }
-	        }
-	        else 
-	        {
-	            $identityFields = $this->_class->getIdentifier();
-	            Assert::isTrue(count($identityFields)==1, 'DoctrineSpringData Repository only support single primary key.');
-	            $idField = $identityFields[0];
-	            $qb = $this->createQueryBuilder('e')->where("e.{$idField} IN (:ids)")->setParameter('ids', $ids);
-	        }	        
+	        return $this->findBy(array());
 	    }
 	    
-	    $qb = $this->createQueryBuilder($alias);
+	    $qb = $this->createQueryBuilder('e');
 	    
-	    
-	    if(empty($pagableOrSortOrIds)){
-	        if(null === $hydrationMode) {
-	            return $this->findBy(array());
-	        }else{
-	            return $this->createQueryBuilder('e')->getQuery()->getResult($hydrationMode);
-	        }
-	    }
-	    else if (is_array($pagableOrSortOrIds)){
+	    if ( !empty($ids) )
+	    {
 	        $identityFields = $this->_class->getIdentifier();
 	        Assert::isTrue(count($identityFields)==1, 'DoctrineSpringData Repository only support single primary key.');
 	        $idField = $identityFields[0];
-	        return $this->createQueryBuilder('e')
-	                   ->where("e.{$idField} IN (:ids)")
-	                   ->setParameter('ids', $pagableOrSortOrIds)
-	                   ->getQuery()
-	                   ->getResult();
+	        $qb->where("e.{$idField} IN (:ids)")->setParameter('ids', $ids);	        
 	    }
-	    else if($pagableOrSortOrIds instanceof  Sort){
-	        $qb = $this->createQueryBuilder('e');
-	        $this->processSorting($qb, $pagableOrSortOrIds);
+	    
+	    if ( null === $pageableOrSort )
+	    {
 	        return $qb->getQuery()->getResult($hydrationMode);
 	    }
-	    else{
-	        $qb = $this->createQueryBuilder('e');
-	        return $this->processPageable($qb, $pagableOrSortOrIds);
+	    else
+	    {
+	        return $this->processPagableOrSorting($qb, $pageableOrSort);
 	    }
-		
+	    
 	}	
 	
 	/**
@@ -262,18 +237,6 @@ class BaseRepositoryImpl extends EntityRepository implements  BaseRepositoryInte
 	    return $page;
 	}
 
-	public final function getClassName(){
-		return $this->_entityName;
-	}
-	
-	protected function buildEntityName(){
-	    $clazz = get_called_class();
-	    $namingStrategy = $clazz::$NAMING_STRATEGY;
-	    $clazz = str_replace('\Repository', "\\{$namingStrategy}", $clazz);
-	    $clazz = str_replace('Repository', '', $clazz);
-	    $clazz = str_replace("Impl", '', $clazz);
-	    return $clazz;
-	}
 
 }
 
