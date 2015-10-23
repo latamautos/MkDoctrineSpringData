@@ -25,7 +25,7 @@ class DefaultNamingResolver implements NamingResolverInterface
 
     public function resolveRepositoryImplementationName($repositoryInterfaceName)
     {
-        return substr(0, strpos($repositoryInterfaceName, $this->interfaceSuffix)) . $this->implementationSuffix ;
+        return substr($repositoryInterfaceName, 0, strpos($repositoryInterfaceName, $this->interfaceSuffix)) . $this->implementationSuffix ;
     }
     
     public function resolveRepositoryInterfaceName($entityName)

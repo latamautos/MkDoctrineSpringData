@@ -20,7 +20,7 @@ use Doctrine\ORM\EntityRepository;
  * @
  * IF YOU OVERIDE CONSTRUCTOR METHOD IN THE EXTENDED CLASS, DO NOT FORGET TO CALL SUPER CONSTRUCTOR METHOD
  */
-abstract class BaseRepositoryImpl extends EntityRepository implements  BaseRepositoryInterface
+class BaseRepositoryImpl extends EntityRepository implements  BaseRepositoryInterface
 {
     
     
