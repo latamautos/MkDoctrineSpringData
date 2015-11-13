@@ -1,11 +1,12 @@
 <?php
 namespace MkDoctrineSpringData\Pagination;
 
-abstract class AbstractPageRequest implements  PageableInterface
+abstract class AbstractPageRequest implements  PageableInterface, Multisite
 {
     
     private $page;
     private $size;
+		private $site;
     
     /**
      * Creates a new {@link AbstractPageRequest}. Pages are zero indexed, thus providing 0 for {@code page} will return
@@ -62,7 +63,15 @@ abstract class AbstractPageRequest implements  PageableInterface
     public function  previousOrFirst() {
         return $this->hasPrevious() ? $this->previous() : $this->first();
     }
-    
+
+		public function getSite() {
+			return $this->site;
+		}
+
+		public function setSite($site) {
+			$this->site = $site;
+		}
+
     /**
      * @see \MkDoctrineSpringData\Pagination\PageableInterface::next()
      */
