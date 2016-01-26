@@ -55,7 +55,7 @@ abstract  class Chunk implements  SliceInterface
      * @see \MkDoctrineSpringData\Pagination\SliceInterface::hasPrevious()
      */
     public function hasPrevious() {
-        return $this->getNumber() >= 0;
+        return $this->getNumber() > 0;
     }
     
     /**
